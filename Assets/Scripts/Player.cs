@@ -18,7 +18,7 @@ public class Player : MonoBehaviour {
     private float moveTimer;
 
     public enum Direction {
-        IDLE,
+        NONE,
         NORTH,
         EAST,
         SOUTH,
@@ -51,7 +51,6 @@ public class Player : MonoBehaviour {
         // Follow path
         if (hasTarget) {
             // Move to target
-            animator.SetBool("Walking", true);
             Vector2 position = Vector2.Lerp(from, to, moveTimer);
             transform.position = new Vector3(position.x, position.y, transform.position.z);
             moveTimer += moveSpeed * Time.deltaTime;
@@ -68,21 +67,20 @@ public class Player : MonoBehaviour {
             hasTarget = true;
             moveTimer = 0f;
 
-            if (from.y < to.y)
-            {
-                animator.SetInteger("Direction", (int) Direction.NORTH);
+            int dy = to.y - from.y;
+            int dx = to.x - from.x;
+            if (dy > 0) {
+                animator.SetInteger("Direction", (int)Direction.NORTH);
+            } else if (dx > 0) {
+                animator.SetInteger("Direction", (int)Direction.EAST);
+            } else if (dy < 0) {
+                animator.SetInteger("Direction", (int)Direction.SOUTH);
+            } else if (dx < 0) {
+                animator.SetInteger("Direction", (int)Direction.WEST);
+            } else {
+                animator.SetInteger("Direction", (int)Direction.NONE);
             }
-            else if (from.x < to.x)
-            {
-                animator.SetInteger("Direction", (int) Direction.EAST);
-            }
-            else if(from.y > to.y)
-            {
-                animator.SetInteger("Direction", (int) Direction.SOUTH);
-            } else
-            {
-                animator.SetInteger("Direction", (int) Direction.WEST);
-            }
+            animator.SetBool("Walking", true);
 
             // Update sorting order of tiles
             GridManager.Instance.UpdateTileSortingOrder(to, from);
