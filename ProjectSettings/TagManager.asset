@@ -41,14 +41,20 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: floor/bottom walls
+  - name: Floor
     uniqueID: 4220793877
     locked: 0
-  - name: players/objects
+  - name: Walls
     uniqueID: 1663437797
     locked: 0
-  - name: top walls
+  - name: Player
     uniqueID: 2004383919
+    locked: 0
+  - name: WallsOverlay
+    uniqueID: 653990687
+    locked: 0
+  - name: DecorationOverlay
+    uniqueID: 1780797507
     locked: 0
   m_RenderingLayers:
   - Default
