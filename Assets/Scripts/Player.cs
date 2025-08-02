@@ -17,10 +17,18 @@ public class Player : MonoBehaviour {
     private bool hasTarget;
     private float moveTimer;
 
+    public enum Direction {
+        IDLE,
+        NORTH,
+        EAST,
+        SOUTH,
+        WEST
+    }
+
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
         animator.SetBool("Walking", false);
-        animator.SetInteger("Direction", 3);
+        animator.SetInteger("Direction", (int) Direction.SOUTH);
     }
 
     private void Update() {
@@ -62,21 +70,22 @@ public class Player : MonoBehaviour {
 
             if (from.y < to.y)
             {
-                animator.SetInteger("Direction", 1);
+                animator.SetInteger("Direction", (int) Direction.NORTH);
             }
             else if (from.x < to.x)
             {
-                animator.SetInteger("Direction", 2);
+                animator.SetInteger("Direction", (int) Direction.EAST);
             }
             else if(from.y > to.y)
             {
-                animator.SetInteger("Direction", 3);
+                animator.SetInteger("Direction", (int) Direction.SOUTH);
             } else
             {
-                animator.SetInteger("Direction", 4);
+                animator.SetInteger("Direction", (int) Direction.WEST);
             }
-                // Update sorting order of tiles
-                GridManager.Instance.UpdateTileSortingOrder(to, from);
+
+            // Update sorting order of tiles
+            GridManager.Instance.UpdateTileSortingOrder(to, from);
         }
     }
 
