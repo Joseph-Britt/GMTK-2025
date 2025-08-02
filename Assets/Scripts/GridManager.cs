@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEngine.WSA;
 
 public class GridManager : MonoBehaviour {
 
@@ -12,15 +13,12 @@ public class GridManager : MonoBehaviour {
     public enum CellType {
         EMPTY,
         FLOOR,
-        WALL,
-        INTERACTABLE
+        WALL
     }
 
     [SerializeField] private Tilemap floorTilemap;
     [SerializeField] private Tilemap wallTilemap;
-    [SerializeField] private Tilemap wallInFrontTilemap;
-    [SerializeField] private Tilemap roofOverlayTilemap;
-    [SerializeField] private Tilemap interactableTilemap;
+    [SerializeField] private Tilemap collisionOverlayTilemap;
 
     private Vector2Int to;
     private Vector2Int from;
@@ -38,8 +36,6 @@ public class GridManager : MonoBehaviour {
         } else {
             Debug.LogError("There is more than one GridManager: " + this);
         }
-
-        new Tilemap();
         
         testVisual = new List<Transform>();
     }
@@ -98,8 +94,8 @@ public class GridManager : MonoBehaviour {
                 }
             }
 
-            if (loops++ > 1000) {
-                Debug.LogError("Finding path required too many iterations (> 1000).");
+            if (loops++ > 10000) {
+                Debug.LogError("Finding path required too many iterations (> 10,000).");
             }
         }
 
@@ -158,11 +154,8 @@ public class GridManager : MonoBehaviour {
 
     public CellType GetCellType(Vector2Int cellPosition) {
         Vector3Int position = new Vector3Int(cellPosition.x, cellPosition.y, 0);
-        if (wallTilemap.HasTile(position) || wallInFrontTilemap.HasTile(position)) {
+        if (wallTilemap.HasTile(position) || collisionOverlayTilemap.HasTile(position)) {
             return CellType.WALL;
-        }
-        if (interactableTilemap.HasTile(position)) {
-            return CellType.INTERACTABLE;
         }
         if (floorTilemap.HasTile(position)) {
             return CellType.FLOOR;
@@ -181,7 +174,7 @@ public class GridManager : MonoBehaviour {
         if (wallTilemap.HasTile((Vector3Int)to)) {
             this.to = to;
             toTile = wallTilemap.GetTile((Vector3Int)to);
-            wallInFrontTilemap.SetTile((Vector3Int)to, toTile);
+            collisionOverlayTilemap.SetTile((Vector3Int)to, toTile);
             wallTilemap.SetTile((Vector3Int)to, null);
             changedToTile = true;
         }
@@ -190,7 +183,7 @@ public class GridManager : MonoBehaviour {
         if (wallTilemap.HasTile((Vector3Int)from)) {
             this.from = from;
             fromTile = wallTilemap.GetTile((Vector3Int)from);
-            wallInFrontTilemap.SetTile((Vector3Int)from, fromTile);
+            collisionOverlayTilemap.SetTile((Vector3Int)from, fromTile);
             wallTilemap.SetTile((Vector3Int)from, null);
             changedFromTile = true;
         }
@@ -198,12 +191,12 @@ public class GridManager : MonoBehaviour {
 
     public void RevertTileSortingOrder() {
         if (changedToTile) {
-            wallInFrontTilemap.SetTile((Vector3Int)to, null);
+            collisionOverlayTilemap.SetTile((Vector3Int)to, null);
             wallTilemap.SetTile((Vector3Int)to, toTile);
         }
 
         if (changedFromTile) {
-            wallInFrontTilemap.SetTile((Vector3Int)from, null);
+            collisionOverlayTilemap.SetTile((Vector3Int)from, null);
             wallTilemap.SetTile((Vector3Int)from, fromTile);
         }
     }
