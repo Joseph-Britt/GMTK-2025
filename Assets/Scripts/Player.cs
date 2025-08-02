@@ -19,6 +19,8 @@ public class Player : MonoBehaviour {
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
+        animator.SetBool("Walking", false);
+        animator.SetInteger("Direction", 3);
     }
 
     private void Update() {
@@ -41,12 +43,14 @@ public class Player : MonoBehaviour {
         // Follow path
         if (hasTarget) {
             // Move to target
+            animator.SetBool("Walking", true);
             Vector2 position = Vector2.Lerp(from, to, moveTimer);
             transform.position = new Vector3(position.x, position.y, transform.position.z);
             moveTimer += moveSpeed * Time.deltaTime;
             if (moveTimer >= 1f) {
                 transform.position = new Vector3(to.x, to.y, transform.position.z);
                 hasTarget = false;
+                animator.SetBool("Walking", false);
             }
         } else if (path != null && path.Count > 0) {
             // Set target
@@ -56,8 +60,23 @@ public class Player : MonoBehaviour {
             hasTarget = true;
             moveTimer = 0f;
 
-            // Update sorting order of tiles
-            GridManager.Instance.UpdateTileSortingOrder(to, from);
+            if (from.y < to.y)
+            {
+                animator.SetInteger("Direction", 1);
+            }
+            else if (from.x < to.x)
+            {
+                animator.SetInteger("Direction", 2);
+            }
+            else if(from.y > to.y)
+            {
+                animator.SetInteger("Direction", 3);
+            } else
+            {
+                animator.SetInteger("Direction", 4);
+            }
+                // Update sorting order of tiles
+                GridManager.Instance.UpdateTileSortingOrder(to, from);
         }
     }
 
