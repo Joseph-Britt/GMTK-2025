@@ -19,7 +19,7 @@ public class NPC : MonoBehaviour
         
     }
 
-    public IEnumerator up(int n)
+    public IEnumerator up(float n)
     {
         float start = transform.position.y;
         animator.SetInteger("Direction", 1);
@@ -32,7 +32,7 @@ public class NPC : MonoBehaviour
         animator.SetBool("Walking", false);
     }
     
-    public IEnumerator down(int n)
+    public IEnumerator down(float n)
     {
         float start = transform.position.y;
         animator.SetInteger("Direction", 3);
@@ -45,7 +45,7 @@ public class NPC : MonoBehaviour
         }
         animator.SetBool("Walking", false);
     }
-    public IEnumerator right(int n)
+    public IEnumerator right(float n)
     {
         float start = transform.position.x;
         animator.SetInteger("Direction", 2);
@@ -57,7 +57,7 @@ public class NPC : MonoBehaviour
         }
         animator.SetBool("Walking", false);
     }
-    public IEnumerator left(int n)
+    public IEnumerator left(float n)
     {
         float start = transform.position.x;
         animator.SetInteger("Direction", 4);
