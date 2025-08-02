@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 5526506046399120516, guid: c81adc84743cb15458793d79dada2790, type: 3}
+    - target: {fileID: 2221711651862152949, guid: 65e595feacc90384b8692ca450151e83, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1978022149}
     - target: {fileID: 2709095371723592063, guid: 65e595feacc90384b8692ca450151e83, type: 3}
       propertyPath: m_Name
       value: Player
@@ -183,6 +187,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8038025140973674199, guid: 65e595feacc90384b8692ca450151e83, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1978022149}
+    - targetCorrespondingSourceObject: {fileID: 8038025140973674199, guid: 65e595feacc90384b8692ca450151e83, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1978022150}
   m_SourcePrefab: {fileID: 100100000, guid: 65e595feacc90384b8692ca450151e83, type: 3}
 --- !u!1 &1551750423
 GameObject:
@@ -1427,6 +1434,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8038025140973674199, guid: 65e595feacc90384b8692ca450151e83, type: 3}
   m_PrefabInstance: {fileID: 989148261}
   m_PrefabAsset: {fileID: 0}
+--- !u!212 &1978022148 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 901006227515711618, guid: 65e595feacc90384b8692ca450151e83, type: 3}
+  m_PrefabInstance: {fileID: 989148261}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &1978022149
 Animator:
   serializedVersion: 7
@@ -1449,6 +1461,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1978022150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1978022146}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a050df026bbd064c9f71fe41ae48d00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Renderer: {fileID: 1978022148}
+  _Texture: {fileID: 2800000, guid: 97b622b3e4395f242b5226981f9550e9, type: 3}
+  _SwapSecondaryTextures: 0
+  _SecondaryTextures: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

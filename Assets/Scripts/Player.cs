@@ -6,6 +6,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private Grid wallGrid;
     [SerializeField] private Tilemap wallTilemap;
+    [SerializeField] private Animator animator;
     private Rigidbody2D rb;
 
     private void Awake() {
