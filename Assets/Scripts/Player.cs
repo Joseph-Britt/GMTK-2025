@@ -1,5 +1,7 @@
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour {
 
@@ -7,20 +9,55 @@ public class Player : MonoBehaviour {
     [SerializeField] private Grid wallGrid;
     [SerializeField] private Tilemap wallTilemap;
     [SerializeField] private Animator animator;
+
     private Rigidbody2D rb;
+    private List<PathNode> path;
+    private Vector2Int from;
+    private Vector2Int to;
+    private bool hasTarget;
+    private float moveTimer;
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
     }
 
     private void Update() {
-        Vector2 moveDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-        transform.position += moveSpeed * Time.deltaTime * (Vector3)moveDirection;
         if (Input.GetMouseButtonDown(0)) {
+            GridManager.Instance.ResetTestVisual();
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2Int position = new Vector2Int((int) Mathf.Floor(mousePosition.x), (int) Mathf.Floor(mousePosition.y));
-            Debug.Log(position);
-            Debug.Log(wallTilemap.HasTile((Vector3Int) position));
+            List<PathNode> newPath = GridManager.Instance.FindPath(to, GridManager.Instance.GetGridPosition(mousePosition));
+            if (newPath != null) {
+                newPath.RemoveAt(0);
+                path = newPath;
+            } else {
+                Debug.Log("No path found");
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.R)) {
+            GridManager.Instance.ResetTestVisual();
+        }
+
+        // Follow path
+        if (hasTarget) {
+            // Move to target
+            Vector2 position = Vector2.Lerp(from, to, moveTimer);
+            transform.position = new Vector3(position.x, position.y, transform.position.z);
+            moveTimer += moveSpeed * Time.deltaTime;
+            if (moveTimer >= 1f) {
+                transform.position = new Vector3(to.x, to.y, transform.position.z);
+                hasTarget = false;
+            }
+        } else if (path != null && path.Count > 0) {
+            // Set target
+            from = GridManager.Instance.GetGridPosition(transform.position);
+            to = path[0].cell;
+            path.RemoveAt(0);
+            hasTarget = true;
+            moveTimer = 0f;
+
+            // Update sorting order of tiles
+            GridManager.Instance.UpdateTileSortingOrder(to, from);
         }
     }
 
