@@ -9,8 +9,6 @@ public class Player : MonoBehaviour {
     public static Player Instance { get; private set; }
 
     [SerializeField] private float moveSpeed = 3f;
-    [SerializeField] private Grid wallGrid;
-    [SerializeField] private Tilemap wallTilemap;
     [SerializeField] private Animator animator;
 
     private Rigidbody2D rb;
@@ -42,7 +40,7 @@ public class Player : MonoBehaviour {
 
     private void Update() {
         // Find path
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButton(0)) {
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             GridManager.Instance.ResetTestVisual();
             Vector2Int goal = GridManager.Instance.GetGridPosition(mousePosition);
@@ -63,6 +61,7 @@ public class Player : MonoBehaviour {
             if (hit.collider != null && hit.collider.gameObject.TryGetComponent(out Door door)) {
                 door.TryInteract(GridManager.Instance.GetGridPosition(transform.position));
             }
+            SetDirection(target.x - to.x, target.y - to.y);
         }
 
         if (Input.GetKeyDown(KeyCode.R)) {
