@@ -6,7 +6,7 @@ using UnityEngine.WSA;
 using Unity.Mathematics;
 using System.Linq;
 
-public class Door : MonoBehaviour {
+public class Door_new : MonoBehaviour {
 
     [Serializable]
     public struct TilePair {
@@ -15,8 +15,6 @@ public class Door : MonoBehaviour {
     }
 
     [SerializeField] private List<Vector2Int> interactablePositions;
-    [SerializeField] private GameObject open;
-    [SerializeField] private GameObject closed;
     [SerializeField] private List<TileBase> openTiles;
     [SerializeField] private List<Vector2Int> openPositions;
     [SerializeField] private List<Tilemap> openTilemaps;
@@ -33,8 +31,6 @@ public class Door : MonoBehaviour {
 
     private void Start() {
         DisplayTiles(closedTiles, closedPositions, closedTilemaps);
-        open.SetActive(false);
-        closed.SetActive(true);
     }
 
     public bool TryInteract(Vector2Int gridPosition) {
@@ -56,18 +52,14 @@ public class Door : MonoBehaviour {
         if (isOpen) {
             // Remove closed tiles
             ClearTiles(closedTiles, closedPositions, closedTilemaps);
-            closed.SetActive(false);
             // Add open tiles
             //DisplayTiles(openTiles, openPositions);
             animator.SetBool("Open", true);
-            open.SetActive(true);
         } else {
             // Remove open tiles
             //ClearTiles(openTiles, openPositions);
-            open.SetActive(false);
             // Add closed tiles
             DisplayTiles(closedTiles, closedPositions, closedTilemaps);
-            closed.SetActive(true);
             animator.SetBool("Open", false);
         }
 
